@@ -1,0 +1,31 @@
+# Ignore all Python virtual environment folders (for each service in the backend)
+**/venv/
+**/*.env
+
+# Ignore all shell scripts (*.sh) in any folder
+**/*.sh
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Docker ignore files
+.dockerignore
+
+# Logs
+*.log
+
+# IDE files (optional)
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+
+# MacOS Finder files
+.AppleDouble
+
+# Backup files
+*~
