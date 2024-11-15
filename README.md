@@ -9,14 +9,8 @@
 1. [Project Overview](#project-overview)
 2. [Technologies Used](#technologies-used)
 3. [Service Architecture](#service-architecture)
-4. [Backend Structure](#backend-structure)
-5. [Frontend Setup](#frontend-setup)
-6. [Docker Setup](#docker-setup)
-7. [Kubernetes Setup](#kubernetes-setup)
-8. [Usage](#usage)
-9. [Testing](#testing)
-10. [Contributing](#contributing)
-11. [License](#license)
+4.. [Usage](#usage)
+
 
 ---
 
