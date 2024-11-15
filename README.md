@@ -9,7 +9,7 @@
 1. [Project Overview](#project-overview)
 2. [Technologies Used](#technologies-used)
 3. [Service Architecture](#service-architecture)
-4.. [Usage](#usage)
+4. [Usage](#usage)
 
 
 ---
