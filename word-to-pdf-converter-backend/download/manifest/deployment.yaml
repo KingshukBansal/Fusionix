@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: download
+  labels:
+    app: download
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: download
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 4
+  template:
+    metadata:
+      labels:
+        app: download
+    spec:
+      containers:
+        - name: download
+          image: kingshukbansal/rapidfort/download
+          ports:
+           - containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: download-configmap
+            - secretRef:
+                name: download-secret
+
+

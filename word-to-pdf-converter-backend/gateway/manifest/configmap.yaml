@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap
+data:
+  METADATA_SVC_ADDRESS: "metadata:8080"
+  DOWNLOAD_SVC_ADDRESS: "download:8082"
+  RABBITMQ_HOST: "rabbitmq"
+  RABBITMQ_RETRY_INTERVAL: "5"
+  MONGO_DOCX_URI: "mongodb://host.minikube.internal:27017/docx_files"
+  MONGO_PDF_URI: "mongodb://host.minikube.internal:27017/pdf_files"
+
