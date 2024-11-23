@@ -13,82 +13,20 @@ jobs:
     runs-on: ubuntu-latest  # Use Ubuntu runner
 
     steps:
-    # Step 1: Checkout the repository (private repository handling)
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        # Use GitHub token to access private repository
-        token: ${{ secrets.ACCESS_TOKEN }}  # Use GitHub's secret token for accessing private repos
-
-    # Step 2: Add SSH Key for EC2 Access
-    - name: Add SSH Key for EC2 Access
-      run: |
-        # Write the SSH key directly to /tmp/id_rsa.pem from GitHub Secrets
-        echo "${{ secrets.SSH_KEY }}" > /tmp/id_rsa.pem
-
-        # Set the correct permissions for the SSH key
-        chmod 600 /tmp/id_rsa.pem
-
-        # Optional: verify the contents of the key (for debugging)
-        # cat /tmp/id_rsa.pem
-
-    # Step 3: Log in to Docker Hub (if you plan to push Docker images)
+    # Step 1: Log in to Docker Hub (if you plan to push Docker images)
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # Step 4: Build and Push Docker Images for Backend Microservices (Optional)
-    # Uncomment this block if you want to build and push Docker images for your backend microservices
-    # - name: Build and Push Backend Images
-    #   run: |
-    #     cd word-to-pdf-converter-backend
-    #     for service in gateway docx-to-pdf-converter notification metadata download; do
-    #       echo "Building and pushing $service..."
-    #       docker build -t ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest $service
-    #       docker push ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest
-    #     done
-
-    # Step 5: SSH to EC2 and deploy the repository
-    - name: SSH to EC2 and deploy
+    # Step 2: Build and Push Docker Images for Backend Microservices (Optional)
+    - name: Build and Push Backend Images
       run: |
-        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-        # Set the repository URL and directory name
-        REPO_URL="git@github.com:KingshukBansal/RapidFort-Assignment.git"  # Use SSH URL
-        REPO_DIR="RapidFort-Assignment"  # Replace with your repo's directory name
+        cd word-to-pdf-converter-backend
+        for service in gateway docx-to-pdf-converter notification metadata download; do
+          echo "Building and pushing $service..."
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest $service
+          docker push ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest
+        done
 
-        # Navigate to the home directory or your working directory
-        cd ~  # Adjust this if you have a specific directory for deployment
-
-        # Step 1: Check if the directory exists and delete it if it does
-        if [ -d "$REPO_DIR" ]; then
-            echo "Directory $REPO_DIR exists. Removing it..."
-            rm -rf "$REPO_DIR"
-        else
-            echo "Directory $REPO_DIR does not exist. Proceeding to clone."
-        fi
-
-        # Step 2: Clone the repository via SSH
-        echo "Cloning repository..."
-        git clone "$REPO_URL"
-
-        echo "Process completed successfully."
-      EOF
-
-
-    # Step 6: Deploy Backend Microservices (using Kubernetes on EC2)
-    - name: Deploy Backend Microservices
-      run: |
-        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << EOF
-          echo "Applying Kubernetes manifests..."
-          cd RapidFort-Assignment/word-to-pdf-converter-backend
-
-          # Apply manifests for each service
-          for service in gateway docx-to-pdf-converter notification metadata download rabbit; do
-            echo "Deploying service: $service"
-            sudo kubectl apply -f $service/manifest
-          done
-
-          echo "All services have been deployed successfully."
-        EOF
