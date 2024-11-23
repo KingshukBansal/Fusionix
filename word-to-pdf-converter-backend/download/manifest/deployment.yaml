@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: download
-          image: kingshukbansal/rapidfort/download
+          image: kingshukbansal/rapidfort-download
           ports:
            - containerPort: 8082
           envFrom:

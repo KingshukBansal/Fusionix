@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: metadata
-          image: kingshukbansal/rapidfort/metadata
+          image: kingshukbansal/rapidfort-metadata
           ports:
            - containerPort: 8080
           envFrom:

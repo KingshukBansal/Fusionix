@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
        - name: converter
-         image: kingshukbansal/rapidfort/docx-to-pdf-converter
+         image: kingshukbansal/rapidfort-docx-to-pdf-converter
          envFrom:
           - configMapRef:
               name: converter-configmap

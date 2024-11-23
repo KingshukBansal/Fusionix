@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: kingshukbansal/rapidfort/gateway
+          image: kingshukbansal/rapidfort-gateway
           ports:
           - containerPort: 8081
           envFrom:

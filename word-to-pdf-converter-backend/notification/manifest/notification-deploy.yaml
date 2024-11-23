@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: notification
-          image: kingshukbansal/rapidfort/notification
+          image: kingshukbansal/rapidfort-notification
           envFrom:
             - configMapRef:
                 name: notification-configmap

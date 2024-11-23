@@ -28,8 +28,8 @@ jobs:
         cd word-to-pdf-converter-backend
         for service in gateway docx-to-pdf-converter notification metadata download; do
           echo "Building and pushing $service..."
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/rapidfort/$service:latest $service
-          docker push ${{ secrets.DOCKER_USERNAME }}/rapidfort/$service:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest $service
+          docker push ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest
         done
 
     # Step 4: Deploy Backend to Minikube on EC2
