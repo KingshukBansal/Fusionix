@@ -38,6 +38,7 @@ jobs:
         echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa
         chmod 600 /tmp/id_rsa
 
+
     # Step 5: Deploy Backend to Minikube on EC2
     - name: Deploy Backend Microservices
       run: |
