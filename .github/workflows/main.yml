@@ -18,7 +18,7 @@ jobs:
     - name: Add SSH Key for EC2 Access
       run: |
         # Decode the base64-encoded SSH private key from GitHub Secrets
-        echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa.pem
+        echo ${{ secrets.SSH_KEY }} | base64 --decode > /tmp/id_rsa.pem
 
         # Change the file permissions so SSH can use it
         chmod 600 /tmp/id_rsa.pem
