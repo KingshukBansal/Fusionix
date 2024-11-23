@@ -54,7 +54,7 @@ jobs:
 
     - name: Create directories and push Kubernetes manifests to EC2
       run: |
-        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa.pem ubuntu@$EC2_IP << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
           # Create the root directory if it doesn't exist
           mkdir -p ~/word-to-pdf-converter
           
