@@ -24,6 +24,60 @@ The system is built using **microservice architecture** and provides a seamless 
 - **Architecture:** Uses Minikube and Docker for scalability and containerization.
 
 ---
+## API Endpoints
+
+### Frontend URL
+
+- **URL:** [http://3.110.48.64:3000/](http://3.110.48.64:3000/)
+
+### Backend URL
+
+- **URL:** [http://13.235.95.204:8081/](http://13.235.95.204:8081/)
+
+### Backend Endpoints
+
+1. **Upload File**
+   - **URL:** `http://13.235.95.204:8081/upload`
+   - **Method:** `POST`
+   - **Request (Form Data):**
+     - `email` (required)
+     - `docx` (required)
+     - `password` (optional to encrypt and protect generated PDF)
+   - **Response:**
+     ```json
+     {
+       "docx_id": "6742147169a563840a36958e",
+       "message": "file uploaded successfully"
+     }
+     ```
+
+2. **Get File Metadata**
+   - **URL:** `http://13.235.95.204:8081/getMetadata?fid=<docx_id>`
+   - **Method:** `GET`
+   - **Query Parameter:** 
+     - `fid` (docx_id from upload response)
+   - **Response:**
+     ```json
+     {
+       "author": null,
+       "created": null,
+       "keywords": null,
+       "modified": "Sat, 23 Nov 2024 17:28:44 GMT",
+       "paragraph_count": 268,
+       "subject": null,
+       "title": "Word Document",
+       "word_count": 775
+     }
+     ```
+
+3. **Download PDF**
+   - **URL:** `http://13.235.95.204:8081/download?fid=<docx_id>`
+   - **Method:** `GET`
+   - **Query Parameter:**
+     - `fid` (docx_id from upload response)
+   - **Response:** PDF file
+
+---
 
 ## Prerequisites
 
