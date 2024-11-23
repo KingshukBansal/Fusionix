@@ -14,16 +14,15 @@ jobs:
     # Step 1: Checkout the Repository
     - name: Checkout Repository
       uses: actions/checkout@v3
-
     - name: Add SSH Key for EC2 Access
       run: |
-        # Decode the base64-encoded SSH private key from GitHub Secrets
-        echo ${{ secrets.SSH_KEY }} | base64 --decode > /tmp/id_rsa.pem
+        # Write the SSH key directly to /tmp/id_rsa.pem from GitHub Secrets
+        echo "${{ secrets.SSH_KEY }}" > /tmp/id_rsa.pem
 
-        # Change the file permissions so SSH can use it
+        # Set the correct permissions for the SSH key
         chmod 600 /tmp/id_rsa.pem
 
-        # Check the file to ensure it's correct
+        # Optional: verify the contents of the key (for debugging)
         cat /tmp/id_rsa.pem
 
 
