@@ -1,52 +1,50 @@
-name: CI/CD Pipeline
+name: Deploy Backend Microservices
 
 on:
   push:
     branches:
-      - main  # Adjust the branch as needed
+      - main
+  pull_request:
 
 jobs:
-  build-and-deploy:
-    name: Build and Deploy
+  build-and-deploy-backend:
     runs-on: ubuntu-latest
 
-    env:
-      REGISTRY: docker.io  # Use Docker Hub or change to AWS ECR if needed
-      REPO: kingshukbansal/rapid-fort  # Replace with your Docker Hub username or ECR repo name
-      KUBECONFIG: /home/runner/.kube/config
-
     steps:
-    # Checkout the repository
-    - name: Checkout code
+    # Step 1: Checkout the Repository
+    - name: Checkout Repository
       uses: actions/checkout@v3
 
-    # Log in to Docker Hub or AWS ECR
+    # Step 2: Log in to Docker Hub
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # Build and push images for all services
-    - name: Build and push Docker images
+    # Step 3: Build and Push Docker Images for Backend Microservices
+    - name: Build and Push Backend Images
       run: |
-        for service in rabbit gateway notification docxtopdfconverter metadata; do
-          docker build -t $REGISTRY/$REPO/$service:latest -f $service/Dockerfile $service
-          docker push $REGISTRY/$REPO/$service:latest
+        cd word-to-pdf-converter-backend
+        for service in gateway docx-to-pdf-converter notification metadata download; do
+          echo "Building and pushing $service..."
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/rapidfort/$service:latest $service
+          docker push ${{ secrets.DOCKER_USERNAME }}/rapidfort/$service:latest
         done
 
-    # Set up Minikube on the EC2 instance
-    - name: Set up SSH to EC2
-      uses: appleboy/ssh-action@v0.1.8
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_PRIVATE_KEY }}
-        script: |
-          # Start Minikube if not running
-          if ! minikube status; then
-            minikube start --driver=none
-          fi
-          
-          # Apply Kubernetes manifests
-          kubectl apply -f /path/to/your/project/manifest
+    # Step 4: Deploy Backend to Minikube on EC2
+    - name: Deploy Backend Microservices
+      run: |
+        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa ubuntu@${{ secrets.EC2_PUBLIC_IP }} << EOF
+          echo "Applying Kubernetes manifests..."
+          cd word-to-pdf-converter-backend
+          for service in gateway docx-to-pdf-converter notification metadata download rabbit; do
+            kubectl apply -f $service/manifest
+          done
+        EOF
+
+    # Step 5: Add SSH Key for EC2 Access
+    - name: Add SSH Key
+      run: |
+        echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa
+        chmod 600 /tmp/id_rsa
