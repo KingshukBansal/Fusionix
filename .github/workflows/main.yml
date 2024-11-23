@@ -17,8 +17,8 @@ jobs:
 
     - name: Add SSH Key for EC2 Access
       run: |
-        echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa
-        chmod 600 /tmp/id_rsa
+        echo "${{ secrets.SSH_KEY }}" > /tmp/id_rsa.pem
+        chmod 600 /tmp/id_rsa.pem
 
 
 
