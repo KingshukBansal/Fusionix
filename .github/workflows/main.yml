@@ -19,6 +19,7 @@ jobs:
       run: |
         echo "${{ secrets.SSH_KEY }}" > /tmp/id_rsa.pem
         chmod 600 /tmp/id_rsa.pem
+        cat /tmp/id_rsa.pem
 
 
 
