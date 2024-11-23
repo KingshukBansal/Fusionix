@@ -5,4 +5,4 @@ metadata:
 data:
   PDF_QUEUE: "pdf"
   DOCX_QUEUE: "docx"
-  BASE_URL: http://mp3converter.com
+  BASE_URL: http://docx2pdfconverter.com
