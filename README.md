@@ -207,12 +207,4 @@ Want to contribute? Follow these steps:
 
 ---
 
-## Contact
-
-For any questions or feedback, feel free to reach out:
-- **Email:** [Your Email]
-- **GitHub Profile:** [Your GitHub Profile Link]
-
----
-
 Enjoy using the **Docx to PDF Converter**! 🚀
