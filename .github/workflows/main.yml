@@ -26,11 +26,22 @@ jobs:
     - name: Get Changed Services
       id: changes
       run: |
-        # Find changed services based on directory names
-        services=$(git diff --name-only HEAD^ HEAD | grep '^word-to-pdf-converter-backend/' | cut -d'/' -f2 | uniq)
+        # Determine the previous commit or fallback for the first commit
+        if git rev-parse HEAD^ >/dev/null 2>&1; then
+          # Get changes between HEAD and the previous commit
+          services=$(git diff --name-only HEAD^ HEAD | grep '^word-to-pdf-converter-backend/' | cut -d'/' -f2 | uniq)
+        else
+          echo "No previous commit found. Assuming first commit."
+          # Include all services as "changed" on the first commit
+          services=$(ls word-to-pdf-converter-backend)
+        fi
+
+        # Output the modified services
         echo "services=$services" >> $GITHUB_ENV
         echo "Modified services: $services"
       shell: bash
+
+
 
     # Step 4: Build and Push Docker Images for Changed Services
     - name: Build and Push Changed Images
