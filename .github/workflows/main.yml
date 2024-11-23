@@ -66,7 +66,7 @@ jobs:
 
           # Copy manifests to the respective subdirectories
           echo "Copying manifests for notification"
-          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/notification/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/notification/
+          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./notification/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/notification/
 
           echo "Copying manifests for gateway"
           scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/gateway/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/gateway/
