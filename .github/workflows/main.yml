@@ -22,28 +22,40 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # Step 3: Build and Push Docker Images for Backend Microservices
-    - name: Build and Push Backend Images
+    # Step 3: Determine Changed Files
+    - name: Get Changed Services
+      id: changes
+      run: |
+        # Find changed services based on directory names
+        services=$(git diff --name-only HEAD^ HEAD | grep '^word-to-pdf-converter-backend/' | cut -d'/' -f2 | uniq)
+        echo "services=$services" >> $GITHUB_ENV
+        echo "Modified services: $services"
+      shell: bash
+
+    # Step 4: Build and Push Docker Images for Changed Services
+    - name: Build and Push Changed Images
+      if: env.services
       run: |
         cd word-to-pdf-converter-backend
-        for service in gateway docx-to-pdf-converter notification metadata download; do
+        for service in $services; do
           echo "Building and pushing $service..."
           docker build -t ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest $service
           docker push ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest
         done
 
-    # Step 4: Deploy Backend to Minikube on EC2
-    - name: Deploy Backend Microservices
+    # Step 5: Deploy Changed Services to Minikube on EC2
+    - name: Deploy Changed Services
+      if: env.services
       run: |
         ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa ubuntu@${{ secrets.EC2_PUBLIC_IP }} << EOF
           echo "Applying Kubernetes manifests..."
           cd word-to-pdf-converter-backend
-          for service in gateway docx-to-pdf-converter notification metadata download rabbit; do
+          for service in $services; do
             kubectl apply -f $service/manifest
           done
         EOF
 
-    # Step 5: Add SSH Key for EC2 Access
+    # Step 6: Add SSH Key for EC2 Access
     - name: Add SSH Key
       run: |
         echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa
