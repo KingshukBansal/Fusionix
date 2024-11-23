@@ -15,9 +15,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Debug SSH Key
+    - name: Add SSH Key for EC2 Access
       run: |
-        echo "${{ secrets.SSH_KEY }}" | base64 --decode
+        echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa
+        chmod 600 /tmp/id_rsa
+
 
 
     # Step 2: Log in to Docker Hub
