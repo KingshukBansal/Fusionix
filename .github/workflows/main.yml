@@ -45,17 +45,17 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/rapidfort-$service:latest
         done
 
-    # Step 4: Add SSH Key for EC2 Access (this should be before the deploy step)
-    - name: Add SSH Key
-      run: |
-        echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa
-        chmod 600 /tmp/id_rsa
+    # # Step 4: Add SSH Key for EC2 Access (this should be before the deploy step)
+    # - name: Add SSH Key
+    #   run: |
+    #     echo "${{ secrets.SSH_KEY }}" | base64 --decode > /tmp/id_rsa
+    #     chmod 600 /tmp/id_rsa
 
 
     # Step 5: Deploy Backend to Minikube on EC2
     - name: Deploy Backend Microservices
       run: |
-        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa ubuntu@${{ secrets.EC2_PUBLIC_IP }} << EOF
+        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << EOF
           echo "Applying Kubernetes manifests..."
           cd word-to-pdf-converter-backend
           for service in gateway docx-to-pdf-converter notification metadata download rabbit; do
