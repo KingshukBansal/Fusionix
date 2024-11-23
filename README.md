@@ -24,6 +24,22 @@ The system is built using **microservice architecture** and provides a seamless 
 - **Architecture:** Uses Minikube and Docker for scalability and containerization.
 
 ---
+## How to Use the Application
+
+1. **Upload a Docx File:**
+   - Go to [http://localhost:3000](http://localhost:3000).
+   - Upload a `.docx` file.
+   - Provide your email and an optional password to encrypt the PDF.
+   - Submit the form.
+
+2. **View File Metadata:**
+   - Once the file is uploaded, the application will display its metadata (e.g., file size, upload date).
+
+3. **Download the PDF:**
+   - Click the "Download" button to download the PDF immediately.
+   - Alternatively, check your email for a notification containing a download link.
+
+---
 ## API Endpoints
 
 ### Frontend URL
@@ -161,24 +177,7 @@ The backend services should now be running. You can access them at:
 
 Access the frontend at: [http://localhost:3000](http://localhost:3000)
 
----
-
-## How to Use the Application
-
-1. **Upload a Docx File:**
-   - Go to [http://localhost:3000](http://localhost:3000).
-   - Upload a `.docx` file.
-   - Provide your email and an optional password to encrypt the PDF.
-   - Submit the form.
-
-2. **View File Metadata:**
-   - Once the file is uploaded, the application will display its metadata (e.g., file size, upload date).
-
-3. **Download the PDF:**
-   - Click the "Download" button to download the PDF immediately.
-   - Alternatively, check your email for a notification containing a download link.
-
----
+<!-- ---
 
 ## API Endpoints
 
@@ -202,7 +201,7 @@ Access the frontend at: [http://localhost:3000](http://localhost:3000)
 3. **Download PDF**
    - **URL:** `/download?fid=<docx_fid>`
    - **Method:** `GET`
-   - **Response:** Downloads the PDF file.
+   - **Response:** Downloads the PDF file. -->
 
 ---
 
@@ -224,11 +223,11 @@ This application is built using **microservices architecture** for better scalab
 Below is the architecture diagram showing the system workflow:
 
 ![Architecture Diagram](DocxToPdfConverter.png)
----
+<!-- ---
 
 ## Demo Video
 
-[Watch the demo video here](path-to-demo-video)
+[Watch the demo video here](path-to-demo-video) -->
 
 ---
 
