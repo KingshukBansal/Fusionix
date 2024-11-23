@@ -52,36 +52,30 @@ jobs:
     #     chmod 600 /tmp/id_rsa
 
 
-    - name: Create directories and push Kubernetes manifests to EC2
+    - name: SSH to EC2 and deploy
       run: |
         ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          # Create the root directory if it doesn't exist
-          mkdir -p ~/word-to-pdf-converter
-          
-          # Change to the created directory
-          cd ~/word-to-pdf-converter
+          # Set the repository URL and directory name
+          REPO_URL="https://github.com/KingshukBansal/RapidFort-Assignment.git"  # Replace with your actual repository URL
+          REPO_DIR="word-to-pdf-converter"  # Replace with your repo's directory name
+          MANIFEST_DIR="./manifest"  # Adjust if needed
 
-          # Create subdirectories if they don't exist
-          mkdir -p notification gateway rabbit metadata download docx-to-pdf-converter
+          # Navigate to the home directory or your working directory
+          cd ~  # Adjust this to your preferred directory if needed
 
-          # Copy manifests to the respective subdirectories
-          echo "Copying manifests for notification"
-          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./notification/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/notification/
+          # Step 1: Check if the directory exists and delete it if it does
+          if [ -d "$REPO_DIR" ]; then
+              echo "Directory $REPO_DIR exists. Removing it..."
+              rm -rf "$REPO_DIR"
+          else
+              echo "Directory $REPO_DIR does not exist. Proceeding to clone."
+          fi
 
-          echo "Copying manifests for gateway"
-          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/gateway/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/gateway/
+          # Step 2: Clone the repository
+          echo "Cloning repository..."
+          git clone "$REPO_URL"
 
-          echo "Copying manifests for rabbit"
-          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/rabbit/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/rabbit/
-
-          echo "Copying manifests for metadata"
-          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/metadata/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/metadata/
-
-          echo "Copying manifests for download"
-          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/download/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/download/
-
-          echo "Copying manifests for docx-to-pdf-converter"
-          scp -i /tmp/id_rsa.pem -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/docx-to-pdf-converter/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/docx-to-pdf-converter/
+          echo "Process completed successfully."
         EOF
 
     # Step 5: Deploy Backend to Minikube on EC2
@@ -89,7 +83,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << EOF
           echo "Applying Kubernetes manifests..."
-          cd word-to-pdf-converter-backend
+          cd RapidFort-Assignment/word-to-pdf-converter-backend
           for service in gateway docx-to-pdf-converter notification metadata download rabbit; do
             sudo kubectl apply -f $service/manifest
           done
