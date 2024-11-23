@@ -53,36 +53,36 @@ jobs:
 
 
     - name: Create directories and push Kubernetes manifests to EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$EC2_IP << 'EOF'
-            # Create the root directory if it doesn't exist
-            mkdir -p ~/word-to-pdf-converter
-            
-            # Change to the created directory
-            cd ~/word-to-pdf-converter
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$EC2_IP << 'EOF'
+          # Create the root directory if it doesn't exist
+          mkdir -p ~/word-to-pdf-converter
+          
+          # Change to the created directory
+          cd ~/word-to-pdf-converter
 
-            # Create subdirectories if they don't exist
-            mkdir -p notification gateway rabbit metadata download docx-to-pdf-converter
+          # Create subdirectories if they don't exist
+          mkdir -p notification gateway rabbit metadata download docx-to-pdf-converter
 
-            # Copy manifests to the respective subdirectories
-            echo "Copying manifests for notification"
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/notification/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/notification/
+          # Copy manifests to the respective subdirectories
+          echo "Copying manifests for notification"
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/notification/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/notification/
 
-            echo "Copying manifests for gateway"
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/gateway/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/gateway/
+          echo "Copying manifests for gateway"
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/gateway/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/gateway/
 
-            echo "Copying manifests for rabbit"
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/rabbit/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/rabbit/
+          echo "Copying manifests for rabbit"
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/rabbit/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/rabbit/
 
-            echo "Copying manifests for metadata"
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/metadata/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/metadata/
+          echo "Copying manifests for metadata"
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/metadata/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/metadata/
 
-            echo "Copying manifests for download"
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/download/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/download/
+          echo "Copying manifests for download"
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/download/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/download/
 
-            echo "Copying manifests for docx-to-pdf-converter"
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/docx-to-pdf-converter/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/docx-to-pdf-converter/
-          EOF
+          echo "Copying manifests for docx-to-pdf-converter"
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./word-to-pdf-converter-backend/docx-to-pdf-converter/manifest/* ubuntu@$EC2_IP:~/word-to-pdf-converter/docx-to-pdf-converter/
+        EOF
 
     # Step 5: Deploy Backend to Minikube on EC2
     - name: Deploy Backend Microservices
