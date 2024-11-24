@@ -56,8 +56,8 @@ The system is built using **microservice architecture** and provides a seamless 
    - **URL:** `http://13.235.95.204:8081/upload`
    - **Method:** `POST`
    - **Request (Form Data):**
-     - `email` (required)
      - `docx` (required)
+     - `email`(optional to send file through email)
      - `password` (optional to encrypt and protect generated PDF)
    - **Response:**
      ```json

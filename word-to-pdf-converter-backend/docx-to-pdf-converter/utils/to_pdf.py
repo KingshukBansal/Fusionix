@@ -82,21 +82,22 @@ def convert(message, fs_docx, fs_pdf, channel):
         print(f"docx_fid5:{docx_fid}")
 
         # Send confirmation via RabbitMQ
-        confirmation_message = json.dumps({
-            "status": "success",
-            "docx_fid": docx_fid,
-            "pdf_fid": str(pdf_fid),
-            "username":message.get("email")
-        })
-        print(f"docx_fid6:{docx_fid}")
+        if  message.get("email"):
+            confirmation_message = json.dumps({
+                "status": "success",
+                "docx_fid": docx_fid,
+                "pdf_fid": str(pdf_fid),
+                "username":message.get("email")
+            })
+            print(f"docx_fid6:{docx_fid}")
 
-        channel.basic_publish(
-            exchange='', 
-            routing_key=os.environ.get("PDF_QUEUE"), 
-            body=confirmation_message, 
-            properties = pika.BasicProperties(
-            delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE
-            ))
+            channel.basic_publish(
+                exchange='', 
+                routing_key=os.environ.get("PDF_QUEUE"), 
+                body=confirmation_message, 
+                properties = pika.BasicProperties(
+                delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE
+                ))
 
         # Clean up temporary files
         print(f"docx_fid7:{docx_fid}")
@@ -190,20 +191,21 @@ def convert_with_password_protection(message, fs_docx, fs_pdf, channel):
             pdf_fid = fs_pdf.put(protected_pdf_file, filename=os.path.basename(protected_pdf_path))
 
         # Send confirmation via RabbitMQ
-        confirmation_message = json.dumps({
-            "status": "success",
-            "docx_fid": docx_fid,
-            "pdf_fid": str(pdf_fid),
-            "username":message.get("email")
+        if message.get("email"):
+            confirmation_message = json.dumps({
+                "status": "success",
+                "docx_fid": docx_fid,
+                "pdf_fid": str(pdf_fid),
+                "username":message.get("email")
 
-        })
-        channel.basic_publish(
-            exchange='', 
-            routing_key=os.environ.get("PDF_QUEUE"), 
-            body=confirmation_message, 
-            properties = pika.BasicProperties(
-            delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE
-            ))
+            })
+            channel.basic_publish(
+                exchange='', 
+                routing_key=os.environ.get("PDF_QUEUE"), 
+                body=confirmation_message, 
+                properties = pika.BasicProperties(
+                delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE
+                ))
 
         # Clean up temporary files
         os.remove(temp_docx_path)
