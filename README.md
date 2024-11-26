@@ -223,11 +223,11 @@ This application is built using **microservices architecture** for better scalab
 Below is the architecture diagram showing the system workflow:
 
 ![Architecture Diagram](DocxToPdfConverter.png)
-<!-- ---
+---
 
 ## Demo Video
 
-[Watch the demo video here](path-to-demo-video) -->
+[Watch the demo video here](https://youtu.be/krsQ7Hg5K7s)
 
 ---
 

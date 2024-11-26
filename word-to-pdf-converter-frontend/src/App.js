@@ -79,8 +79,8 @@ function App() {
   return (
     <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white min-h-screen max-w-screen-lg">
       {/* Updated File Upload Heading */}
-      <h2 className="text-3xl font-semibold text-indigo-400 mb-6 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-        Upload Your DOCX File
+      <h2 className="text-3xl text-center font-semibold text-indigo-400 mb-6 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+        DOCX to PDF Converter
       </h2>
 
       <UploadForm onUpload={handleUpload} />

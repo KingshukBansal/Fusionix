@@ -23,7 +23,7 @@ const UploadForm = ({ onUpload }) => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="file" className="block text-sm font-medium text-white">
-            Choose File
+          Upload Your DOCX File
           </label>
           <input
             type="file"
