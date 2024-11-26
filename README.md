@@ -9,6 +9,11 @@ This project is a **Docx to PDF Converter** web application where users can:
 The system is built using **microservice architecture** and provides a seamless experience with notification support. Users receive an email with a download button for the converted PDF.
 
 ---
+## Demo Video
+
+[Watch the demo video here](https://youtu.be/krsQ7Hg5K7s)
+
+---
 
 ## Features
 
@@ -44,16 +49,16 @@ The system is built using **microservice architecture** and provides a seamless 
 
 ### Frontend URL
 
-- **URL:** [http://3.110.48.64:3000/](http://3.110.48.64:3000/)
+- **URL:** [http://localhost:3000/](http://localhost:3000/)
 
 ### Backend URL
 
-- **URL:** [http://13.235.95.204:8081/](http://13.235.95.204:8081/)
+- **URL:** [http://localhost:8081/](http://localhost:8081/)
 
 ### Backend Endpoints
 
 1. **Upload File**
-   - **URL:** `http://13.235.95.204:8081/upload`
+   - **URL:** `http://localhost:8081/upload`
    - **Method:** `POST`
    - **Request (Form Data):**
      - `docx` (required)
@@ -68,7 +73,7 @@ The system is built using **microservice architecture** and provides a seamless 
      ```
 
 2. **Get File Metadata**
-   - **URL:** `http://13.235.95.204:8081/getMetadata?fid=<docx_id>`
+   - **URL:** `http://localhost:8081/getMetadata?fid=<docx_id>`
    - **Method:** `GET`
    - **Query Parameter:** 
      - `fid` (docx_id from upload response)
@@ -87,7 +92,7 @@ The system is built using **microservice architecture** and provides a seamless 
      ```
 
 3. **Download PDF**
-   - **URL:** `http://13.235.95.204:8081/download?fid=<docx_id>`
+   - **URL:** `http://localhost:8081/download?fid=<docx_id>`
    - **Method:** `GET`
    - **Query Parameter:**
      - `fid` (docx_id from upload response)
@@ -225,11 +230,7 @@ Below is the architecture diagram showing the system workflow:
 ![Architecture Diagram](DocxToPdfConverter.png)
 ---
 
-## Demo Video
 
-[Watch the demo video here](https://youtu.be/krsQ7Hg5K7s)
-
----
 
 ## Technologies Used
 
